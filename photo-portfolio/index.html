@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MR.z摄影作品集 | 摄影作品展示</title>
+<meta name="description" content="MR.z摄影作品集 —— 风光、空间、生态、人像作品展示">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='27' fill='none' stroke='%23f1f0ec' stroke-width='4'/%3E%3Ccircle cx='32' cy='32' r='9' fill='%23f1f0ec'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.lug.ustc.edu.cn">
+<link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css2?family=Noto+Serif+SC:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;500&display=swap">
+<style>
+:root{
+  --bg:            #0b0b0b;
+  --bg-soft:       #101010;
+  --surface:       #151515;
+  --text:          #f1f0ec;
+  --text-muted:    #9a9a96;
+  --line:          rgba(241,240,236,.12);
+  --header-bg:     rgba(11,11,11,.86);
+  --overlay:       rgba(0,0,0,.42);
+  --shadow:        0 24px 60px rgba(0,0,0,.5);
+}
+html[data-theme="light"]{
+  --bg:            #f6f5f2;
+  --bg-soft:       #efeee9;
+  --surface:       #ffffff;
+  --text:          #1a1a1a;
+  --text-muted:    #6f6f6a;
+  --line:          rgba(26,26,26,.14);
+  --header-bg:     rgba(246,245,242,.9);
+  --overlay:       rgba(0,0,0,.30);
+  --shadow:        0 24px 60px rgba(0,0,0,.12);
+}
+*{ margin:0; padding:0; box-sizing:border-box; }
+html{
+  scroll-behavior:smooth;
+  scroll-padding-top:76px;
+}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:"Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-weight:300;
+  font-size:16px;
+  line-height:1.8;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+}
+img{
+  display:block;
+  max-width:100%;
+  -webkit-user-drag:none;
+  user-drag:none;
+  -webkit-touch-callout:none;
+  user-select:none;
+}
+a{ color:inherit; text-decoration:none; }
+ul{ list-style:none; }
+button{
+  font-family:inherit;
+  border:none;
+  background:none;
+  color:inherit;
+  cursor:pointer;
+}
+:focus-visible{ outline:2px solid var(--text); outline-offset:3px; }
+.container{ width:100%; max-width:1280px; margin:0 auto; padding:0 28px; }
+.section-head{ margin-bottom:56px; }
+.section-label{
+  font-size:12px;
+  letter-spacing:.35em;
+  text-transform:uppercase;
+  color:var(--text-muted);
+  margin-bottom:14px;
+}
+.section-title{
+  font-family:"Noto Serif SC","Songti SC","SimSun",serif;
+  font-weight:300;
+  font-size:clamp(1.9rem, 3.4vw, 2.7rem);
+  letter-spacing:.06em;
+}
+@media (prefers-reduced-motion: reduce){
+  *{ animation:none !important; transition:none !important; }
+  html{ scroll-behavior:auto; }
+}
+.site-header{
+  position:fixed; top:0; left:0; right:0;
+  z-index:100;
+  height:72px;
+  display:flex; align-items:center;
+  transition:background .35s ease, box-shadow .35s ease, border-color .35s ease;
+  border-bottom:1px solid transparent;
+}
+.site-header.scrolled{
+  background:var(--header-bg);
+  -webkit-backdrop-filter:blur(14px);
+  backdrop-filter:blur(14px);
+  border-bottom-color:var(--line);
+}
+.site-header .container{
+  display:flex; align-items:center; justify-content:space-between;
+}
+.brand{
+  font-family:"Noto Serif SC","Songti SC","SimSun",serif;
+  font-weight:400;
+  font-size:17px;
+  letter-spacing:.14em;
+  white-space:nowrap;
+  padding:10px 0;
+}
+.main-nav ul{ display:flex; gap:44px; }
+.main-nav a{
+  font-size:14px;
+  letter-spacing:.22em;
+  color:var(--text-muted);
+  transition:color .3s ease;
+}
+.main-nav a:hover,
+.main-nav a.active{ color:var(--text); }
+.nav-tools{ display:flex; align-items:center; gap:14px; }
+.hamburger{ display:none; }
+.mobile-nav{
+  position:fixed; top:72px; left:0; right:0;
+  z-index:99;
+  background:var(--bg);
+  border-bottom:1px solid var(--line);
+  padding:8px 0 18px;
+  transform:translateY(-8px);
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .3s ease, transform .3s ease, visibility .3s;
+}
+.mobile-nav.open{ opacity:1; transform:none; visibility:visible; }
+.mobile-nav a{
+  display:block;
+  padding:14px 28px;
+  font-size:15px;
+  letter-spacing:.22em;
+  color:var(--text-muted);
+}
+.mobile-nav a:hover{ color:var(--text); }
+.hero{
+  position:relative;
+  min-height:100vh;
+  display:flex; align-items:center;
+  overflow:hidden;
+}
+.hero-img{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  object-fit:cover;
+  filter:grayscale(20%) contrast(1.05);
+  opacity:1;
+}
+.hero-overlay{
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(0,0,0,.45) 0%, rgba(0,0,0,.18) 45%, rgba(0,0,0,.55) 100%);
+}
+.hero-content{
+  position:relative; z-index:1;
+  width:100%;
+  max-width:1280px;
+  margin:0 auto;
+  padding:120px 28px 0;
+  color:#f4f3ef;
+}
+.hero-overline{
+  font-size:12px;
+  letter-spacing:.5em;
+  text-transform:uppercase;
+  opacity:.75;
+  margin-bottom:20px;
+}
+.hero h1{
+  font-family:"Noto Serif SC","Songti SC","SimSun",serif;
+  font-weight:300;
+  font-size:clamp(2.5rem, 7vw, 4.6rem);
+  line-height:1.2;
+  letter-spacing:.1em;
+  margin-bottom:26px;
+  text-shadow:0 2px 24px rgba(0,0,0,.35);
+}
+.hero-slogan{
+  font-size:clamp(1rem, 1.6vw, 1.15rem);
+  letter-spacing:.3em;
+  opacity:.85;
+  font-weight:300;
+}
+.scroll-cue{
+  position:absolute; left:50%; bottom:34px;
+  transform:translateX(-50%);
+  z-index:1;
+  display:flex; flex-direction:column; align-items:center; gap:10px;
+  color:#f4f3ef;
+  font-size:10px;
+  letter-spacing:.4em;
+  opacity:.7;
+}
+.scroll-cue::before{
+  content:"";
+  width:1px; height:52px;
+  background:linear-gradient(180deg, #f4f3ef, transparent);
+}
+#works{ padding:120px 0 130px; }
+.filters{
+  display:flex; flex-wrap:wrap; gap:10px;
+  margin-bottom:44px;
+}
+.filter-btn{
+  padding:11px 24px;
+  min-height:44px;
+  display:inline-flex; align-items:center;
+  font-size:13px;
+  letter-spacing:.24em;
+  color:var(--text-muted);
+  border:1px solid var(--line);
+  border-radius:999px;
+  transition:color .3s ease, border-color .3s ease, background .3s ease;
+}
+.filter-btn:hover{ color:var(--text); border-color:var(--text-muted); }
+.filter-btn.active{
+  color:var(--bg);
+  background:var(--text);
+  border-color:var(--text);
+}
+/* =========真正无空隙瀑布流 CSS‑Columns 三列 ========= */
+.masonry-grid{
+  column-count:3;
+  column-gap:20px;
+}
+.work-item{
+  break-inside:avoid;
+  margin-bottom:20px;
+  cursor:zoom-in;
+}
+.work-item .frame{
+  position:relative;
+  overflow:hidden;
+  border-radius:2px;
+}
+.frame-mask{
+  position:absolute;
+  inset:0;
+  z-index:10;
+  background:transparent;
+}
+.work-item img{
+  width:100%;
+  height:auto;
+  display:block;
+  transition:transform .5s ease, filter .5s ease;
+}
+.work-item:hover img{ transform:scale(1.02); filter:brightness(.88); }
+.item-caption{
+  position:absolute;
+  left:0; right:0; bottom:0;
+  padding:40px 16px 14px;
+  background:linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+  color:#fff;
+  font-size:13px;
+  letter-spacing:0.14em;
+  opacity:0;
+  transition:opacity 0.3s ease;
+  z-index:11;
+}
+.work-item:hover .item-caption{ opacity:1; }
+
+.gallery-note{
+  margin-top:56px;
+  text-align:center;
+  font-size:12px;
+  letter-spacing:.3em;
+  color:var(--text-muted);
+}
+#about{ padding:120px 0; background:var(--bg-soft); }
+.about-grid{
+  display:grid;
+  grid-template-columns:380px 1fr;
+  gap:72px;
+  align-items:start;
+}
+.about-avatar{ position:relative; }
+.about-avatar img{
+  width:55%;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  filter:grayscale(100%) contrast(1.05);
+}
+.about-avatar figcaption{
+  margin-top:14px;
+  font-size:12px;
+  letter-spacing:.3em;
+  color:var(--text-muted);
+}
+.about-name{
+  font-family:"Noto Serif SC","Songti SC","SimSun",serif;
+  font-weight:400;
+  font-size:1.5rem;
+  letter-spacing:.14em;
+  margin-bottom:4px;
+}
+.about-role{
+  font-size:14px;
+  letter-spacing:.3em;
+  color:var(--text-muted);
+  margin-bottom:34px;
+}
+.about-bio p{
+  color:var(--text-muted);
+  margin-bottom:18px;
+  max-width:60ch;
+}
+.philosophy{ margin-top:46px; }
+.philosophy h3{
+  font-size:12px;
+  font-weight:400;
+  letter-spacing:.35em;
+  color:var(--text-muted);
+  margin-bottom:18px;
+}
+.philosophy li{
+  padding:18px 0;
+  border-top:1px solid var(--line);
+}
+.philosophy li:last-child{ border-bottom:1px solid var(--line); }
+.philosophy .p-name{
+  font-size:15px;
+  letter-spacing:.2em;
+  margin-bottom:4px;
+}
+.philosophy .p-desc{
+  font-size:14px;
+  letter-spacing:.06em;
+  color:var(--text-muted);
+}
+#contact{ padding:120px 0 130px; }
+.contact-text{
+  max-width:56ch;
+  color:var(--text-muted);
+  margin-bottom:44px;
+}
+.contact-email{
+  display:inline-block;
+  min-height:44px;
+  line-height:44px;
+  font-family:"Noto Serif SC","Songti SC","SimSun",serif;
+  font-size:clamp(1.2rem, 2.4vw, 1.6rem);
+  letter-spacing:.08em;
+  padding-bottom:8px;
+  border-bottom:1px solid var(--text);
+}
+.contact-socials{
+  display:flex; flex-wrap:wrap; gap:34px;
+  margin-top:52px;
+  padding-top:34px;
+  border-top:1px solid var(--line);
+}
+.contact-socials .s-label{
+  display:block;
+  font-size:11px;
+  letter-spacing:.3em;
+  color:var(--text-muted);
+  margin-bottom:6px;
+}
+.site-footer{
+  border-top:1px solid var(--line);
+  padding:36px 0;
+  font-size:12px;
+  letter-spacing:.22em;
+  color:var(--text-muted);
+}
+.site-footer .container{
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  flex-wrap:wrap;
+}
+.visit-counter{
+  margin-top:12px;
+  width:100%;
+  text-align:center;
+  font-size:11px;
+  color:var(--text-muted);
+  letter-spacing:0.2em;
+}
+/*灯箱 */
+.lightbox{
+  position:fixed; inset:0;
+  z-index:200;
+  background:rgba(5,5,5,.93);
+  display:flex; align-items:center; justify-content:center;
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .3s ease, visibility .3s;
+  overflow:hidden;
+}
+.lightbox.open{ opacity:1; visibility:visible; }
+.lightbox figure{
+  max-width:min(92vw, 1280px);
+  max-height:86vh;
+  display:flex; flex-direction:column; align-items:center;
+  position:relative;
+}
+.lightbox-mask{
+  position:absolute;
+  inset:0;
+  z-index:10;
+  background:transparent;
+  pointer-events:none;
+}
+#lbImg{
+  max-width:100%;
+  max-height:78vh;
+  object-fit:contain;
+  transition:transform 0.25s ease;
+  position:relative;
+  z-index:5;
+}
+.lb-btn{
+  position:absolute;
+  display:flex; align-items:center; justify-content:center;
+  width:48px; height:48px;
+  border-radius:50%;
+  color:#f4f3ef;
+  background:rgba(255,255,255,.06);
+  z-index:20;
+}
+.lb-close{ top:22px; right:22px; }
+.lb-prev{ left:18px; top:50%; transform:translateY(-50%); }
+.lb-next{ right:18px; top:50%; transform:translateY(-50%); }
+.lb-btn svg{ width:20px; height:20px; fill:none; stroke:currentColor;stroke-width:1.5; }
+
+/*响应式列数*/
+@media (max-width:1024px){
+  .about-grid{ grid-template-columns:1fr; gap:48px; }
+  .about-avatar{ max-width:320px; }
+  .masonry-grid{ column-count:2; }
+}
+@media (max-width:768px){
+  .main-nav{ display:none; }
+  .hamburger{ display:flex; }
+  .hero-content{ padding-top:96px; }
+  .scroll-cue{ display:none; }
+  .masonry-grid{ column-count:1; }
+}
+@media (max-width:560px){
+  #works, #about, #contact{ padding:80px 0; }
+  .section-head{ margin-bottom:40px; }
+  .contact-socials{ gap:24px; }
+  .masonry-grid{ column-count:1; }
+}
+</style>
+</head>
+<body oncontextmenu="return false;">
+<header class="site-header" id="siteHeader">
+  <div class="container">
+    <a href="#home" class="brand">MR.z摄影作品集</a>
+    <nav class="main-nav" aria-label="主导航">
+      <ul>
+        <li><a href="#home">首页</a></li>
+        <li><a href="#works">作品</a></li>
+        <li><a href="#about">关于我</a></li>
+        <li><a href="#contact">联系</a></li>
+      </ul>
+    </nav>
+    <div class="nav-tools">
+      <button class="icon-btn hamburger" aria-label="打开菜单">
+        <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="1.5" /></svg>
+      </button>
+    </div>
+  </div>
+</header>
+<nav class="mobile-nav" id="mobileNav">
+  <a href="#home">首页</a>
+  <a href="#works">作品</a>
+  <a href="#about">关于我</a>
+  <a href="#contact">联系</a>
+</nav>
+<section class="hero" id="home">
+  <img class="hero-img" src="assets/4C7A1787.jpg" alt="MR.z摄影作品集">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-overline">Portfolio</div>
+    <h1>MR.z摄影作品集</h1>
+    <p class="hero-slogan">用镜头收藏光影，让瞬间成为永恒</p>
+  </div>
+  <div class="scroll-cue">SCROLL</div>
+</section>
+<section id="works">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-label">Works</div>
+      <h2 class="section-title">精选作品</h2>
+    </div>
+    <div class="filters">
+      <button class="filter-btn active" data-filter="all">全部</button>
+      <button class="filter-btn" data-filter="landscape">风光</button>
+      <button class="filter-btn" data-filter="Architectural">空间</button>
+      <button class="filter-btn" data-filter="ecology">生态</button>
+      <button class="filter-btn" data-filter="portrait">人像</button>
+    </div>
+    <div class="masonry-grid" id="masonryContainer"></div>
+    <div id="imagePool" style="display:none">
+<figure class="work-item" data-cat="landscape" data-src="assets/4C7A8106.jpg" data-title="虔诚">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A8106.jpg" alt="虔诚" loading="lazy">
+    <div class="item-caption">虔诚</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="landscape" data-src="assets/4C7A9832.jpg" data-title="漓江01">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A9832.jpg" alt="漓江01" loading="lazy">
+    <div class="item-caption">漓江01</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="landscape" data-src="assets/4C7A9873.jpg" data-title="漓江02">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A9873.jpg" alt="漓江02" loading="lazy">
+    <div class="item-caption">漓江02</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="landscape" data-src="assets/4C7A8051.jpg" data-title="稻城亚丁">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A8051.jpg" alt="稻城亚丁" loading="lazy">
+    <div class="item-caption">稻城亚丁</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="ecology" data-src="assets/4C7A8202.jpg" data-title="藏酋猴">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A8202.jpg" alt="藏酋猴" loading="lazy">
+    <div class="item-caption">藏酋猴</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="Architectural" data-src="assets/4C7A0023.jpg" data-title="建筑01">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A0023.jpg" alt="建筑01" loading="lazy">
+    <div class="item-caption">建筑01</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="portrait" data-src="assets/IMG_1343.jpg" data-title="人像01">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/IMG_1343.jpg" alt="人像01" loading="lazy">
+    <div class="item-caption">人像01</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="Architectural" data-src="assets/4C7A9988.jpg" data-title="建筑02">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A9988.jpg" alt="建筑02" loading="lazy">
+    <div class="item-caption">建筑02</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="portrait" data-src="assets/4C7A7245.jpg" data-title="人像02">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A7245.jpg" alt="人像02" loading="lazy">
+    <div class="item-caption">人像02</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="landscape" data-src="assets/4C7A0090.jpg" data-title="星空01">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A0090.jpg" alt="星空01" loading="lazy">
+    <div class="item-caption">星空01</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="portrait" data-src="assets/IMG_1442.jpg" data-title="人像03">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/IMG_1442.jpg" alt="人像03" loading="lazy">
+    <div class="item-caption">人像03</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="landscape" data-src="assets/IMG_20250204_145759.jpg" data-title="广州">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/IMG_20250204_145759.jpg" alt="广州" loading="lazy">
+    <div class="item-caption">广州</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="Architectural" data-src="assets/4C7A8174.jpg" data-title="建筑03">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A8174.jpg" alt="建筑03" loading="lazy">
+    <div class="item-caption">建筑03</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="landscape" data-src="assets/4C7A1094.jpg" data-title="星空‑大新">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A1094.jpg" alt="星空‑大新" loading="lazy">
+    <div class="item-caption">星空‑大新</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="ecology" data-src="assets/4C7A1376.jpg" data-title="鸟‑黑喉石䳭">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A1376.jpg" alt="鸟‑黑喉石䳭" loading="lazy">
+    <div class="item-caption">鸟‑黑喉石䳭</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="ecology" data-src="assets/4C7A1647.jpg" data-title="鸟‑夜鹭">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A1647.jpg" alt="鸟‑夜鹭" loading="lazy">
+    <div class="item-caption">鸟‑夜鹭</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="landscape" data-src="assets/4c7a1788.jpg" data-title="星空03">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4c7a1788.jpg" alt="星空03" loading="lazy">
+    <div class="item-caption">星空03</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="ecology" data-src="assets/4C7A1944.jpg" data-title="鸟‑捕食">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A1944.jpg" alt="鸟‑捕食" loading="lazy">
+    <div class="item-caption">鸟‑捕食</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="ecology" data-src="assets/4C7A2301.jpg" data-title="鸟‑白鹭">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A2301.jpg" alt="鸟‑白鹭" loading="lazy">
+    <div class="item-caption">鸟‑白鹭</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="landscape" data-src="assets/4C7A2741.jpg" data-title="星空04">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A2741.jpg" alt="星空04" loading="lazy">
+    <div class="item-caption">星空04</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="landscape" data-src="assets/4c7a2898.jpg" data-title="星空05">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4c7a2898.jpg" alt="星空05" loading="lazy">
+    <div class="item-caption">星空05</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="ecology" data-src="assets/4C7A3177.jpg" data-title="鸟05">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A3177.jpg" alt="鸟05" loading="lazy">
+    <div class="item-caption">鸟05</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="ecology" data-src="assets/4C7A4935.jpg" data-title="白头叶猴">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A4935.jpg" alt="白头叶猴" loading="lazy">
+    <div class="item-caption">白头叶猴</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="landscape" data-src="assets/4C7A5531.jpg" data-title="星空06">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A5531.jpg" alt="星空06" loading="lazy">
+    <div class="item-caption">星空06</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="ecology" data-src="assets/4C7A5691.jpg" data-title="母与子‑白头叶猴">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A5691.jpg" alt="母与子‑白头叶猴" loading="lazy">
+    <div class="item-caption">母与子‑白头叶猴</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="landscape" data-src="assets/4C7A6209.jpg" data-title="星空‑银河拱桥">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A6209.jpg" alt="星空‑银河拱桥" loading="lazy">
+    <div class="item-caption">星空‑银河拱桥</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="landscape" data-src="assets/4C7A6380.jpg" data-title="星空07">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A6380.jpg" alt="星空07" loading="lazy">
+    <div class="item-caption">星空07</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="ecology" data-src="assets/4C7A6893.jpg" data-title="鸟‑白鹭">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A6893.jpg" alt="鸟‑白鹭" loading="lazy">
+    <div class="item-caption">鸟‑白鹭</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="ecology" data-src="assets/4C7A7454.jpg" data-title="鸟‑台湾鹎">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A7454.jpg" alt="鸟‑台湾鹎" loading="lazy">
+    <div class="item-caption">鸟‑台湾鹎</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="landscape" data-src="assets/4C7A8008.jpg" data-title="草原银河01">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A8008.jpg" alt="草原银河01" loading="lazy">
+    <div class="item-caption">草原银河01</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="landscape" data-src="assets/4C7A8020.jpg" data-title="草原银河02">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A8020.jpg" alt="草原银河02" loading="lazy">
+    <div class="item-caption">草原银河02</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="landscape" data-src="assets/4C7A8169.jpg" data-title="草原银河03">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A8169.jpg" alt="草原银河03" loading="lazy">
+    <div class="item-caption">草原银河03</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="landscape" data-src="assets/4C7A9610.jpg" data-title="龙谷湾银河01">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A9610.jpg" alt="龙谷湾银河01" loading="lazy">
+    <div class="item-caption">龙谷湾银河01</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="landscape" data-src="assets/4C7A9936.jpg" data-title="龙谷湾银河02">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A9936.jpg" alt="龙谷湾银河02" loading="lazy">
+    <div class="item-caption">龙谷湾银河02</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="landscape" data-src="assets/cy.jpg" data-title="星空08">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/cy.jpg" alt="星空08" loading="lazy">
+    <div class="item-caption">星空08</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="landscape" data-src="assets/DJI_0067.jpg" data-title="鸟瞰南宁01">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/DJI_0067.jpg" alt="鸟瞰南宁01" loading="lazy">
+    <div class="item-caption">鸟瞰南宁01</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="Architectural" data-src="assets/4C7A1401.jpg" data-title="室内01">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A1401.jpg" alt="室内01" loading="lazy">
+    <div class="item-caption">室内01</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="landscape" data-src="assets/DJI_0811Pano1.jpg" data-title="鸟瞰南宁02">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/DJI_0811Pano1.jpg" alt="鸟瞰南宁02" loading="lazy">
+    <div class="item-caption">鸟瞰南宁02</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="Architectural" data-src="assets/4C7A7465HDR.jpg" data-title="室内02">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A7465HDR.jpg" alt="室内02" loading="lazy">
+    <div class="item-caption">室内02</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="landscape" data-src="assets/stacked_starless_wb_recomposed.jpg" data-title="星空09">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/stacked_starless_wb_recomposed.jpg" alt="星空09" loading="lazy">
+    <div class="item-caption">星空09</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="Architectural" data-src="assets/4C7A8201.jpg" data-title="环境">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A8201.jpg" alt="环境" loading="lazy">
+    <div class="item-caption">环境</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="landscape" data-src="assets/4C7A0202.jpg" data-title="星空10">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A0202.jpg" alt="星空10" loading="lazy">
+    <div class="item-caption">星空10</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="Architectural" data-src="assets/DJI_0157.jpg" data-title="建筑‑上帝视角">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/DJI_0157.jpg" alt="建筑‑上帝视角" loading="lazy">
+    <div class="item-caption">建筑‑上帝视角</div>
+  </div>
+</figure>
+<figure class="work-item" data-cat="portrait" data-src="assets/4C7A3393.jpg" data-title="人像04">
+  <div class="frame">
+    <div class="frame-mask"></div>
+    <img src="assets/4C7A3393.jpg" alt="人像04" loading="lazy">
+    <div class="item-caption">人像04</div>
+  </div>
+</figure>
+    </div>
+    <p class="gallery-note">点击图片可以放大查看</p>
+  </div>
+</section>
+<section id="about">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-label">About</div>
+      <h2 class="section-title">关于我</h2>
+    </div>
+    <div class="about-grid">
+      <figure class="about-avatar">
+        <img src="assets/wx.jpg" alt="MR.z">
+        <figcaption>· 扫二维码，添加我为朋友 ·</figcaption>
+      </figure>
+      <div>
+        <h3 class="about-name">MR. z</h3>
+        <p class="about-role">独立摄影师 · 广西南宁</p>
+        <div class="about-bio">
+          <p>我是一名以自然光线为语言的摄影师，专注于风光、空间、生态与人像四个方向的长期拍摄。行走于山川与市井之间，我相信最好的照片不来自刻意的摆布，而来自对现场耐心的观察与等待。</p>
+          <p>这里收录了我近年的部分作品，愿与你分享我眼中的世界。</p>
+        </div>
+        <div class="philosophy">
+          <h3>拍摄理念</h3>
+          <ul>
+            <li><div class="p-name">克制与留白</div><div class="p-desc">画面里只保留必要的光影，其余交给呼吸。</div></li>
+            <li><div class="p-name">自然光的叙事</div><div class="p-desc">跟随光的方向，让明暗替画面说话。</div></li>
+            <li><div class="p-name">真实的瞬间</div><div class="p-desc">捕捉不被打扰的日常，记录时间的痕迹。</div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="contact">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-label">Contact</div>
+      <h2 class="section-title">联系我</h2>
+    </div>
+    <p class="contact-text">如果你喜欢我的作品，欢迎通过邮件或社交平台与我交流。约拍、约稿，都可以随时联系我。</p>
+    <a class="contact-email" href="mailto:zgooooo@qq.com">zgooooo@qq.com</a>
+    <div class="contact-socials">
+      <div>
+        <span class="s-label">微信号</span>
+        <div>MRzo__</div>
+      </div>
+      <div>
+        <span class="s-label">小红书</span>
+        <div>6283326310</div>
+      </div>
+      <div>
+        <span class="s-label">抖音号</span>
+        <div>66920195979</div>
+      </div>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container">
+    <span>© 2026 个人摄影作品集 · 保留所有权利</span>
+    <a href="#home">回到顶部 ↑</a>
+    <div class="visit-counter" id="counterText">访问统计：加载中…</div>
+  </div>
+</footer>
+<div class="lightbox" id="lightbox">
+  <button class="lb-btn lb-close" id="lbClose">
+    <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" /></svg>
+  </button>
+  <button class="lb-btn lb-prev" id="lbPrev">
+    <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg>
+  </button>
+  <button class="lb-btn lb-next" id="lbNext">
+    <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
+  </button>
+  <figure>
+    <div class="lightbox-mask"></div>
+    <img id="lbImg" src="" alt="放大图片">
+  </figure>
+</div>
+
+<script>
+const pool = document.querySelector('#imagePool');
+const container = document.querySelector('#masonryContainer');
+let allItems = [];
+
+// =========灯箱：双击放大、单击关闭、放大后拖动图片 =========
+const lbImg = document.getElementById('lbImg');
+let imgScale = 1;
+let tapTimer = null;
+const TAP_DELAY = 300;
+//拖动变量
+let isDrag = false;
+let startX=0,startY=0;
+let offsetX=0,offsetY=0;
+
+//触摸拖动
+lbImg.addEventListener('touchstart',(e)=>{
+  if(imgScale<=1) return;
+  isDrag=true;
+  startX = e.touches[0].clientX - offsetX;
+  startY = e.touches[0].clientY - offsetY;
+})
+lbImg.addEventListener('touchmove',(e)=>{
+  if(!isDrag || imgScale<=1) return;
+  e.preventDefault();
+  offsetX = e.touches[0].clientX - startX;
+  offsetY = e.touches[0].clientY - startY;
+  lbImg.style.transform = `translate(${offsetX}px,${offsetY}px) scale(${imgScale})`;
+})
+lbImg.addEventListener('touchend',()=>{
+  isDrag=false;
+})
+
+//双击放大，单击直接关闭灯箱
+lbImg.addEventListener('touchend', function(e){
+    e.preventDefault();
+    if(tapTimer){
+        //双击：切换放大
+        clearTimeout(tapTimer);
+        tapTimer=null;
+        if(imgScale===1){
+            imgScale=2;
+            offsetX=0;offsetY=0;
+            lbImg.style.transform=`translate(0px,0px) scale(2)`;
+        }else{
+            imgScale=1;
+            offsetX=0;offsetY=0;
+            lbImg.style.transform=`scale(1)`;
+        }
+    }else{
+        tapTimer = setTimeout(()=>{
+            //单击：直接关闭灯箱，返回瀑布流
+            closeLightbox();
+            tapTimer = null;
+        }, TAP_DELAY);
+    }
+});
+
+//切换图片重置缩放+偏移
+function resetImageZoom(){
+    imgScale = 1;
+    offsetX=0; offsetY=0;
+    lbImg.style.transform = 'scale(1)';
+}
+
+function renderMasonry(filterKey='all'){
+  container.innerHTML = '';
+  allItems = Array.from(pool.querySelectorAll('.work-item'));
+  const filtered = allItems.filter(item=> filterKey==='all' || item.dataset.cat === filterKey);
+  filtered.forEach(el=>container.appendChild(el));
+}
+
+/*分类筛选*/
+const filterBtns = document.querySelectorAll('.filter-btn');
+const items = document.querySelectorAll('.work-item');
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filterVal = btn.dataset.filter;
+    items.forEach(item => {
+      const cat = item.dataset.cat;
+      if(filterVal === 'all' || filterVal === cat){
+        item.style.display = '';
+      }else{
+        item.style.display = 'none';
+      }
+    });
+  });
+});
+
+/*灯箱*/
+const lightbox = document.getElementById('lightbox');
+const lbClose = document.getElementById('lbClose');
+const lbPrev = document.getElementById('lbPrev');
+const lbNext = document.getElementById('lbNext');
+let currentIndex = 0;
+
+function getVisibleItems(){
+  return Array.from(document.querySelectorAll('.masonry-grid .work-item'));
+}
+function openLightbox(idx){
+  resetImageZoom();
+  const list = getVisibleItems();
+  if(!list.length) return;
+  currentIndex = idx;
+  lbImg.src = list[currentIndex].dataset.src;
+  lightbox.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeLightbox(){
+  resetImageZoom();
+  lightbox.classList.remove('open');
+  document.body.style.overflow='';
+}
+function step(delta){
+  resetImageZoom();
+  const list = getVisibleItems();
+  currentIndex = (currentIndex + delta + list.length) % list.length;
+  lbImg.src = list[currentIndex].dataset.src;
+}
+
+container.addEventListener('click',e=>{
+  const item = e.target.closest('.work-item');
+  if(!item) return;
+  const list = getVisibleItems();
+  const idx = list.indexOf(item);
+  if(idx>=0) openLightbox(idx);
+})
+lbClose.addEventListener('click',closeLightbox);
+lbPrev.addEventListener('click',()=>step(-1));
+lbNext.addEventListener('click',()=>step(1));
+lightbox.addEventListener('click',e=>{if(e.target===lightbox) closeLightbox();})
+document.addEventListener('keydown',e=>{
+  if(!lightbox.classList.contains('open')) return;
+  if(e.key==='Escape') closeLightbox();
+  if(e.key==='ArrowLeft') step(-1);
+  if(e.key==='ArrowRight') step(1);
+})
+
+/*移动端菜单*/
+const hamburger = document.querySelector('.hamburger');
+const mobileNav = document.querySelector('.mobile-nav');
+hamburger?.addEventListener('click',()=>mobileNav.classList.toggle('open'));
+mobileNav?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mobileNav.classList.remove('open')));
+
+/*导航滚动*/
+const header = document.querySelector('.site-header');
+window.addEventListener('scroll',()=>{
+  header.classList.toggle('scrolled', window.scrollY>40);
+},{passive:true})
+
+//全局阻止拖拽图片
+document.addEventListener('dragstart',function(e){
+    if(e.target.tagName==='IMG') e.preventDefault();
+})
+//全局阻止长按弹出菜单
+document.addEventListener('touchstart',function(ev){
+    if(ev.target.tagName === "IMG") ev.preventDefault();
+},{passive:false})
+
+//=====================真实全网访问统计（Pages Functions接口）=====================
+async function loadRealCounter(){
+  try{
+    const res = await fetch("/counter");
+    const json = await res.json();
+    document.getElementById("counterText").innerText = `网站总访问：${json.total} 次`;
+  }catch(err){
+    console.error("计数器接口错误",err);
+    document.getElementById("counterText").innerText = "访问统计：暂时无法获取";
+  }
+}
+
+window.addEventListener('load',()=>{
+  renderMasonry('all');
+  loadRealCounter();
+});
+</script>
+</body>
+</html>
