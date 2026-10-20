@@ -1,0 +1,9 @@
+# Cloudflare Pages 响应头规则（放在站点根目录即生效）
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Cache-Control: public, max-age=0, must-revalidate
+
+/images/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
