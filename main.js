@@ -666,7 +666,7 @@
       zoom.dragging = false;
       lb.classList.remove('is-panning');
       if (moved) {
-        // 未放大时的左右滑动 → 切换作品
+        // 未放大时的左右滑动 → 切换作品（触屏快速滑动被浏览器取消时也按位移兜底判断）
         if (!zoom.on && Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) step(dx > 0 ? -1 : 1);
         return;
       }
