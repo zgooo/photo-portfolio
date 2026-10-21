@@ -1258,11 +1258,11 @@ body {
   .hero { min-height: 50svh; }
   .hero__content { padding-bottom: 28px; }
   /* 各行右端与 MR.z 的"R"对齐成阶梯：PORTFOLIO/中文 ≈ R 圆弧右缘，英文斜体 ≈ R 脚 */
-  /* 手机版字体统一放大一号（轮播→作品），可读性优先 */
-  .hero__eyebrow { margin-bottom: 13px; font-size: 8px; letter-spacing: 0.184em; }
-  .hero__name { font-size: clamp(45px, 20vw, 82px); }
-  .hero__tagline { margin-top: 17px; font-size: 10.4px; letter-spacing: 0.1em; }
-  .hero__tagline-en { margin-top: 6px; font-size: 9.5px; }
+  /* 手机版首屏文字块整体放大 30%（字号与间距同步 ×1.3） */
+  .hero__eyebrow { margin-bottom: 17px; font-size: 10.4px; letter-spacing: 0.184em; }
+  .hero__name { font-size: clamp(59px, 26vw, 106px); }
+  .hero__tagline { margin-top: 22px; font-size: 13.5px; letter-spacing: 0.1em; }
+  .hero__tagline-en { margin-top: 8px; font-size: 12.4px; }
 
   /* 「向下滚动」+ 轮播圆点：整体缩小 50%；圆点为 3px 实心圆 */
   .hero__scroll { font-size: 7px; gap: 5px; }
@@ -1282,8 +1282,8 @@ body {
   .hero__foot { flex-direction: column-reverse; align-items: flex-start; gap: 8px; padding-bottom: 13px; }
   .hero__slide-cap { display: none; }  /* 手机上空间小，图注收进图片 alt */
 
-  /* 第二张轮播（海鸟）：取景窗口左移，鸟贴近 "z" 右侧、避开文字 */
-  .hero__slide:nth-child(2) img { object-position: 30% 50%; }
+  /* 第二张轮播（海鸟）：文字放大 30% 后鸟整体右移，与「z」并排不重叠 */
+  .hero__slide:nth-child(2) img { object-position: 17% 50%; }
 
   /* 关于/联系板块：文字再收一档 */
   #about .eyebrow, #contact .eyebrow { font-size: 6.6px; margin-bottom: 6px; }
