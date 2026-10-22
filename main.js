@@ -61,7 +61,8 @@
     scale: 1,
     tx: 0,
     ty: 0,
-    pointerId: null,
+    pointers: new Map(),  // 活动中的指针（支持双指缩放）
+    pinch: null,          // 双指缩放会话的初始状态
     dragging: false,
     moved: false,
     startX: 0,
@@ -527,7 +528,7 @@
     if (p) { const im = new Image(); im.src = p.url; }
   }
 
-  /* ---------- 放大 / 拖动 ---------- */
+  /* ---------- 放大 / 拖动 / 双指缩放 ---------- */
   function resetZoom() {
     zoom.on = false;
     zoom.scale = 1;
@@ -535,7 +536,8 @@
     zoom.ty = 0;
     zoom.dragging = false;
     zoom.moved = false;
-    zoom.pointerId = null;
+    zoom.pointers.clear();
+    zoom.pinch = null;
     const img = $('#lbImg');
     img.style.transition = '';
     img.style.transform = '';
@@ -626,21 +628,75 @@
     // 点击图片以外的空白处关闭
     lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
 
-    // 指针事件：拖动查看 + 单击 / 双击
+    // 缩放上限：图片原始尺寸相对当前显示尺寸的倍数（封顶 5 倍）
+    const maxScale = () => {
+      const img = $('#lbImg');
+      const m = img.naturalWidth && img.clientWidth ? img.naturalWidth / img.clientWidth : 3;
+      return Math.max(1, Math.min(m, 5));
+    };
+
+    // 指针事件：拖动查看 + 双指捏合缩放 + 单击 / 双击 / 滑动切换
     stage.addEventListener('pointerdown', (e) => {
       if (e.pointerType === 'mouse' && e.button !== 0) return;
-      zoom.pointerId = e.pointerId;
+      try { stage.setPointerCapture(e.pointerId); } catch (err) { /* 忽略 */ }
+      zoom.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
       zoom.moved = false;
       zoom.dragging = false;
-      zoom.startX = e.clientX;
-      zoom.startY = e.clientY;
-      zoom.originX = zoom.tx;
-      zoom.originY = zoom.ty;
-      try { stage.setPointerCapture(e.pointerId); } catch (err) { /* 忽略 */ }
+
+      if (zoom.pointers.size === 1) {
+        zoom.startX = e.clientX;
+        zoom.startY = e.clientY;
+        zoom.originX = zoom.tx;
+        zoom.originY = zoom.ty;
+      } else if (zoom.pointers.size === 2) {
+        // 第二根手指落下 → 进入双指缩放（取消待定的单击/双击判定）
+        clearTimeout(tapTimer);
+        lastTap = 0;
+        const [a, b] = [...zoom.pointers.values()];
+        const sRect = stage.getBoundingClientRect();
+        const imgRect = $('#lbImg').getBoundingClientRect();
+        zoom.pinch = {
+          dist0: Math.hypot(a.x - b.x, a.y - b.y) || 1,
+          scale0: zoom.on ? zoom.scale : 1,
+          tx0: zoom.tx,
+          ty0: zoom.ty,
+          sl: sRect.left,
+          st: sRect.top,
+          m0x: (a.x + b.x) / 2 - sRect.left,
+          m0y: (a.y + b.y) / 2 - sRect.top,
+          // 图片未变换时的中心（rect 中心减去当前位移）
+          cx: imgRect.left + imgRect.width / 2 - sRect.left - zoom.tx,
+          cy: imgRect.top + imgRect.height / 2 - sRect.top - zoom.ty
+        };
+      }
     });
 
     stage.addEventListener('pointermove', (e) => {
-      if (zoom.pointerId !== e.pointerId) return;
+      const pt = zoom.pointers.get(e.pointerId);
+      if (!pt) return;
+      pt.x = e.clientX;
+      pt.y = e.clientY;
+
+      /* 双指缩放：按两指间距比例改缩放，并让中点跟随手指 */
+      if (zoom.pinch && zoom.pointers.size >= 2) {
+        const [a, b] = [...zoom.pointers.values()];
+        const dist = Math.hypot(a.x - b.x, a.y - b.y) || 1;
+        const s = Math.min(maxScale(), Math.max(1, zoom.pinch.scale0 * dist / zoom.pinch.dist0));
+        const mx = (a.x + b.x) / 2 - zoom.pinch.sl;
+        const my = (a.y + b.y) / 2 - zoom.pinch.st;
+        const k = s / zoom.pinch.scale0;
+        zoom.scale = s;
+        zoom.tx = mx - zoom.pinch.cx - k * (zoom.pinch.m0x - zoom.pinch.cx - zoom.pinch.tx0);
+        zoom.ty = my - zoom.pinch.cy - k * (zoom.pinch.m0y - zoom.pinch.cy - zoom.pinch.ty0);
+        zoom.on = s > 1.001;
+        zoom.dragging = true;
+        lb.classList.toggle('is-zoomed', zoom.on);
+        lb.classList.add('is-panning');
+        clampPan();
+        applyZoom();
+        return;
+      }
+
       const dx = e.clientX - zoom.startX;
       const dy = e.clientY - zoom.startY;
       if (!zoom.moved && Math.abs(dx) + Math.abs(dy) > 6) zoom.moved = true;
@@ -657,11 +713,33 @@
     });
 
     const endPointer = (e) => {
-      if (zoom.pointerId !== e.pointerId) return;
+      if (!zoom.pointers.has(e.pointerId)) return;
+      zoom.pointers.delete(e.pointerId);
+
+      /* 双指缩放进行中：少于一指则结束缩放会话 */
+      if (zoom.pinch) {
+        if (zoom.pointers.size < 2) {
+          zoom.pinch = null;
+          lb.classList.remove('is-panning');
+          const rest = [...zoom.pointers.values()][0];
+          if (rest) {
+            // 剩下的一根手指无缝转为拖动平移
+            zoom.startX = rest.x;
+            zoom.startY = rest.y;
+            zoom.originX = zoom.tx;
+            zoom.originY = zoom.ty;
+            zoom.moved = true;
+            zoom.dragging = zoom.on;
+          } else {
+            zoom.dragging = false;
+          }
+        }
+        return;   // 双指手势不触发单击/双击/滑动切换
+      }
+
       const moved = zoom.moved;
       const dx = e.clientX - zoom.startX;
       const dy = e.clientY - zoom.startY;
-      zoom.pointerId = null;
       zoom.moved = false;
       zoom.dragging = false;
       lb.classList.remove('is-panning');
@@ -952,7 +1030,7 @@
     let fitTimer = null;
     window.addEventListener('resize', () => {
       if (fitTimer) cancelAnimationFrame(fitTimer);
-      fitTimer = requestAnimationFrame(fitQrStrip);
+      fitTimer = requestAnimationFrame(() => { fitQrStrip(); });
     });
   }
 
